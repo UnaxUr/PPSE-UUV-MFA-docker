@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurar MFA</title>
+</head>
+<body>
+
+    <h1>Configurar MFA</h1>
+
+    <p>Usuario: {{ username }}</p>
+
+    <p>Escanea el código QR con tu aplicación Authenticator.</p>
+
+    <img src="/static/mfa_qr.png" alt="Código QR para configurar MFA">
+
+    <h3>Si no puedes escanear el QR</h3>
+
+    <p>Introduce manualmente esta clave en tu aplicación Authenticator:</p>
+
+    <p><strong>{{ mfa_secret }}</strong></p>
+
+    <p>Después introduce el código de 6 dígitos generado por la aplicación:</p>
+
+    <form method="POST" action="/verify-mfa">
+
+        <input type="text" name="code" maxlength="6" required>
+
+        <button type="submit">Verificar MFA</button>
+
+    </form>
+
+</body>
+</html>

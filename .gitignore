@@ -1,0 +1,43 @@
+
+# Credenciales y variables de entorno
+.env
+.env.*
+!.env.example
+
+# Secretos, claves privadas y certificados sensibles
+secrets/
+certs/private/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.pyc
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+logs/
+
+# Datos, copias de seguridad y volcados de bases de datos
+*.dump
+*.bak
+*.backup
+*.sql.gz
+*.sqlite
+*.sqlite3
+
+# Código y archivos generados localmente
+app/static/mfa_qr.png
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
