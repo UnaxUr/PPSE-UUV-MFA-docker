@@ -1,23 +1,41 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Verificar MFA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar MFA | MFA System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <main class="container">
+        <div class="logo">M</div>
 
-    <h1>Verificación MFA</h1>
+        <h1>Verificación MFA</h1>
+        <p class="subtitle">
+            Introduce el código temporal de seis dígitos generado por tu aplicación de autenticación.
+        </p>
 
-    <p>Introduce el código de 6 dígitos de tu aplicación Authenticator.</p>
+        <form method="POST" action="{{ url_for('verify_mfa') }}">
+            <label for="code">Código de verificación</label>
+            <input
+                type="text"
+                id="code"
+                name="code"
+                placeholder="000000"
+                inputmode="numeric"
+                pattern="[0-9]{6}"
+                maxlength="6"
+                autocomplete="one-time-code"
+                required
+            >
 
-    <form method="POST">
+            <button type="submit">Verificar código</button>
+        </form>
 
-        <label>Código MFA:</label><br>
-        <input type="text" name="code" maxlength="6" required><br><br>
-
-        <button type="submit">Verificar</button>
-
-    </form>
-
+        <div class="footer">
+            Protege tu cuenta. No compartas tus códigos de verificación.
+        </div>
+    </main>
 </body>
 </html>

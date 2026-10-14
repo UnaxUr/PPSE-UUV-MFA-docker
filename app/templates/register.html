@@ -1,28 +1,49 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Crear cuenta - MFA System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta | MFA System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <main class="container">
+        <div class="logo">M</div>
 
-    <h1>Crear cuenta</h1>
+        <h1>Crear cuenta</h1>
+        <p class="subtitle">
+            Regístrate para empezar a utilizar la autenticación multifactor.
+        </p>
 
-    <form method="POST">
+        <form method="POST" action="{{ url_for('register') }}">
+            <label for="username">Nombre de usuario</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Elige un nombre de usuario"
+                autocomplete="username"
+                required
+            >
 
-        <label>Usuario:</label><br>
-        <input type="text" name="username" required><br><br>
+            <label for="password">Contraseña</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Crea una contraseña"
+                autocomplete="new-password"
+                required
+            >
 
-        <label>Contraseña:</label><br>
-        <input type="password" name="password" required><br><br>
+            <button type="submit">Crear cuenta</button>
+        </form>
 
-        <button type="submit">Crear cuenta</button>
-
-    </form>
-
-    <br>
-
-    <a href="/login">Volver al login</a>
-
+        <div class="footer">
+            ¿Ya tienes una cuenta?
+            <a href="{{ url_for('login') }}">Iniciar sesión</a>
+        </div>
+    </main>
 </body>
 </html>

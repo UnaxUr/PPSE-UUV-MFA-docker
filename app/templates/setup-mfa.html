@@ -1,34 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Configurar MFA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar MFA | MFA System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <main class="container">
+        <div class="logo">M</div>
 
-    <h1>Configurar MFA</h1>
+        <h1>Configurar MFA</h1>
+        <p class="subtitle">
+            Usuario: {{ username }}
+        </p>
 
-    <p>Usuario: {{ username }}</p>
+        <p class="subtitle">
+            Escanea el código QR con tu aplicación Authenticator.
+        </p>
 
-    <p>Escanea el código QR con tu aplicación Authenticator.</p>
+        <img
+            class="qr-code"
+            src="{{ url_for('static', filename='mfa_qr.png') }}"
+            alt="Código QR para configurar MFA"
+        >
 
-    <img src="/static/mfa_qr.png" alt="Código QR para configurar MFA">
+        <h3>Configuración manual</h3>
+        <p class="subtitle">
+            Si no puedes escanear el QR, introduce esta clave en tu aplicación Authenticator.
+        </p>
 
-    <h3>Si no puedes escanear el QR</h3>
+        <div class="secret">{{ mfa_secret }}</div>
 
-    <p>Introduce manualmente esta clave en tu aplicación Authenticator:</p>
+        <p class="subtitle">
+            Después, introduce el código de seis dígitos generado por la aplicación.
+        </p>
 
-    <p><strong>{{ mfa_secret }}</strong></p>
+        <form method="POST" action="/verify-mfa">
+            <label for="code">Código de verificación</label>
+            <input
+                type="text"
+                id="code"
+                name="code"
+                placeholder="000000"
+                inputmode="numeric"
+                pattern="[0-9]{6}"
+                maxlength="6"
+                autocomplete="one-time-code"
+                required
+            >
 
-    <p>Después introduce el código de 6 dígitos generado por la aplicación:</p>
+            <button type="submit">Verificar MFA</button>
+        </form>
 
-    <form method="POST" action="/verify-mfa">
-
-        <input type="text" name="code" maxlength="6" required>
-
-        <button type="submit">Verificar MFA</button>
-
-    </form>
-
+        <div class="footer">
+            Introduce el código actual de tu aplicación Authenticator.
+        </div>
+    </main>
 </body>
 </html>

@@ -22,12 +22,13 @@ def get_db_connection():
 
 @app.route("/")
 def home():
-    return """
-    <h1>MFA System</h1>
-    <p>Flask funciona correctamente.</p>
-    <p>Conexión con PostgreSQL: OK</p>
-    <a href="/register">Crear cuenta</a>
-    """
+    return render_template(
+        "message.html",
+        title="MFA System",
+        message="Protege tu cuenta con autenticacion multifactor.",
+        link_url="/login",
+        link_text="Iniciar Sesion"
+    )
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -58,19 +59,24 @@ def register():
             cursor.close()
             connection.close()
 
-            return """
-            <h1>Cuenta creada correctamente</h1>
-            <p>El usuario se ha registrado correctamente.</p>
-            <a href="/login">Ir al login</a>
-            """
+            return render_template(
+                "message.html",
+                title="Cuenta creada correctamente",
+                message="El usuario se ha registrado correctamente.",
+                link_url="/login",
+                link_text="Ir al login"
+            )
 
         except Exception as e:
+            print(f"ERROR AL CREAR CUENTA: {e}", flush=True)
 
-            return """
-            <h1>Error al crear la cuenta</h1>
-            <p>No se ha podido crear la cuenta</p>
-            <a href="/register">Volver</a>
-            """, 500
+            return render_template(
+                "message.html",
+                title="Error al crear la cuenta",
+                message="No se ha podido crear la cuenta.",
+                link_url="/register",
+                link_text="Volver"
+            ), 500
 
     return render_template("register.html")
 
@@ -99,13 +105,29 @@ def login():
         cursor.close()
         connection.close()
 
+
         if user is None:
-            return "Usuario o contraseña incorrectos", 401
+            return render_template(
+            "message.html",
+            title="Acceso denegado",
+            message="Usuario o contraseña incorrectos.",
+            link_url="/login",
+            link_text="Volver al login"
+        ), 401
+
 
         from werkzeug.security import check_password_hash
 
+
         if not check_password_hash(user[2], password):
-            return "Usuario o contraseña incorrectos", 401
+            return render_template(
+            "message.html",
+            title="Acceso denegado",
+            message="Usuario o contraseña incorrectos.",
+            link_url="/login",
+            link_text="Volver al login"
+        ), 401
+
 
         # Guardar temporalmente usuario pendiente de MFA
         session["mfa_pending_user_id"] = user[0]
@@ -222,16 +244,21 @@ def verify_mfa():
             session.pop("mfa_pending_user_id", None)
             session.pop("mfa_pending_username", None)
 
-            return """
-            <h1>Login completado</h1>
-            <p>Autenticación multifactor correcta.</p>
-            """
+            return render_template(
+                "message.html",
+                title="Login completado",
+                message="Autenticación multifactor correcta.",
+                link_url="/",
+                link_text="Volver al inicio"
+            )
 
-        return """
-        <h1>Código incorrecto</h1>
-        <p>El código MFA no es válido.</p>
-        <a href="/verify-mfa">Volver</a>
-        """, 401
+        return render_template(
+            "message.html",
+            title="Código incorrecto",
+            message="El código MFA no es válido. Inténtalo de nuevo.",
+            link_url="/verify-mfa",
+            link_text="Volver a verificar"
+        ), 401
 
     return render_template("verify-mfa.html")
 
